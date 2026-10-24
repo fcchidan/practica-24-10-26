@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestor de Tareas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Mis Tareas</h2>
+                    <a href="{% url 'crear_tarea' %}" class="btn btn-primary">Nueva Tarea</a>
+                </div>
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        {% if tareas %}
+                            <table class="table table-hover align-middle">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Título</th>
+                                        <th>Estado</th>
+                                        <th>Fecha</th>
+                                        <th class="text-end">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for tarea in tareas %}
+                                        <tr>
+                                            <td>
+                                                <strong>{{ tarea.titulo }}</strong>
+                                                {% if tarea.descripcion %}
+                                                    <br><small class="text-muted">{{ tarea.descripcion|truncatechars:50 }}</small>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if tarea.completada %}
+                                                    <span class="badge bg-success">Completada</span>
+                                                {% else %}
+                                                    <span class="badge bg-warning text-dark">Pendiente</span>
+                                                {% endif %}
+                                            </td>
+                                            <td><small>{{ tarea.fecha_creacion|date:"d/m/Y H:i" }}</small></td>
+                                            <td class="text-end">
+                                                <a href="{% url 'editar_tarea' tarea.id %}" class="btn btn-sm btn-outline-secondary">Editar</a>
+                                                <a href="{% url 'eliminar_tarea' tarea.id %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <p class="text-center text-muted my-3">No hay tareas registradas todavía.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
